@@ -1,0 +1,467 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper,margin=2.1cm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{173C50}
+\definecolor{pale}{HTML}{F1F5F7}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,pdftitle={Lista 1 resolvida — Sistemas Inteligentes — 2026.2},pdfauthor={Material de estudo}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.6em}
+\setlist{itemsep=0.25em,topsep=0.3em,leftmargin=*}
+\setlength{\emergencystretch}{2em}
+\newtcolorbox{enunciado}{breakable,colback=pale,colframe=ink!30,boxrule=0.4pt,arc=1.5mm,left=3mm,right=3mm,top=2mm,bottom=2mm}
+\newcommand{\questao}[2]{\Needspace{8\baselineskip}\subsection*{\textcolor{ink}{Questão #1\enspace|\enspace #2}}\addcontentsline{toc}{subsection}{Questão #1 — #2}}
+\begin{document}
+\begin{center}
+    {\small UNIVERSIDADE FEDERAL RURAL DO SEMI-ÁRIDO\\
+        Centro Multidisciplinar Pau dos Ferros\\
+        Departamento de Engenharias e Tecnologia}
+    \vspace{0.8cm} \\
+    {\bfseries{Lista 1}}\\[0.25cm]
+    {\Large Sistemas Inteligentes}\\[0.3cm]
+    {PAM0466 \quad $\cdot$ \quad Semestre 2026.2}\\[0.2cm]
+    {\small Docente: Pedro Thiago Valério de Souza}
+\end{center}
+\vspace{0.6cm}
+\newpage
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\newpage
+\section{Fundamentos de aprendizagem}
+\questao{1}{Modalidades de aprendizagem}
+\begin{enunciado}
+    Diferenciar os conceitos de aprendizado supervisionado, não supervisionado e aprendizagem por reforço.
+\end{enunciado}
+\textbf{Resposta.}
+\begin{itemize}
+    \item \textbf{Supervisionado:} aprende uma relação entre entradas $\mathbf{x}$ e saídas desejadas $y$ a partir de exemplos rotulados. O objetivo é prever a saída de novas entradas. Inclui classificação (por exemplo, identificar spam) e regressão (prever um preço).
+    \item \textbf{Não supervisionado:} recebe dados sem rótulos de saída e procura estruturas, padrões ou representações. Exemplos: agrupar clientes e reduzir a dimensionalidade dos dados.
+    \item \textbf{Por reforço:} um agente interage com um ambiente, executa ações e recebe recompensas. Aprende uma política de ação para maximizar a recompensa acumulada ao longo do tempo, equilibrando exploração e aproveitamento do que já aprendeu.
+\end{itemize}
+A diferença central está no sinal de aprendizagem: respostas corretas por exemplo, estrutura dos dados ou recompensas decorrentes de ações.
+\questao{2}{Escolha do tipo de aprendizagem}
+\begin{enunciado}
+    Qual tipo de algoritmo (aprendizado supervisionado, não supervisionado ou aprendizagem por reforço) você usaria para:
+    \begin{enumerate}[label=(\alph*)]
+        \item possibilitar que um robô andasse por aí em lugares inexplorados?
+        \item para segmentar seus clientes em diversos grupos?
+        \item para detectar spam em uma caixa de e-mail?
+    \end{enumerate}
+\end{enunciado}
+\textbf{Resposta.}
+\begin{enumerate}[label=(\alph*)]
+    \item \textbf{Aprendizagem por reforço.} O robô aprende ações de navegação pela interação com o ambiente. Pode receber recompensas por avançar com segurança ou alcançar destinos e penalidades por colisões. É a escolha esperada para a aprendizagem da política de navegação.
+    \item \textbf{Aprendizado não supervisionado.} Um algoritmo de clusterização identifica grupos de clientes com características semelhantes, sem precisar de categorias previamente rotuladas.
+    \item \textbf{Aprendizado supervisionado.} Mensagens previamente rotuladas como spam ou não spam permitem treinar um classificador que atribua essas classes a novos e-mails.
+\end{enumerate}
+\questao{3}{Batch e on-line}
+\begin{enunciado}
+    Diferenciar os conceitos de aprendizagem em batch e aprendizado on-line.
+\end{enunciado}
+\textbf{Resposta.}
+Na \textbf{aprendizagem em batch}, o treinamento usa um conjunto de dados disponível em um determinado momento. Após o treinamento, o modelo permanece fixo até um novo processo de treinamento. Incorporar dados novos normalmente exige um novo ajuste com uma base atualizada.
+
+Na \textbf{aprendizagem on-line}, o modelo é atualizado incrementalmente com novas amostras ou pequenos lotes. É útil em fluxos de dados, em situações com restrição de memória e quando a distribuição dos dados muda ao longo do tempo.
+
+Aprendizagem on-line não significa necessariamente conexão à internet. Além disso, treinar um modelo em minilotes sobre uma base fixa não implica, por si só, aprendizagem on-line em produção.
+\questao{4}{Parâmetros e hiperparâmetros}
+\begin{enunciado}
+    Qual a diferença entre parâmetro e hiperparâmetro de um modelo?
+\end{enunciado}
+\textbf{Resposta.}
+\textbf{Parâmetros} são valores aprendidos a partir dos dados durante o treinamento, como os coeficientes e o intercepto de uma regressão.
+
+\textbf{Hiperparâmetros} configuram a estrutura do modelo ou seu processo de aprendizagem e são escolhidos antes de cada ajuste. Exemplos: número de vizinhos $k$ no $k$-NN, intensidade de regularização $\alpha$ e profundidade máxima de uma árvore.
+
+Hiperparâmetros podem ser selecionados automaticamente por busca e validação cruzada. Ainda assim, diferem dos parâmetros estimados pelo algoritmo em cada treinamento.
+\questao{5}{Modelos e instâncias}
+\begin{enunciado}
+    Qual a diferença entre algoritmos de aprendizado de máquina baseados em modelos e algoritmos baseados em instâncias?
+\end{enunciado}
+\textbf{Resposta.}
+Algoritmos \textbf{baseados em modelos} ajustam uma representação geral da relação entre entradas e saídas. Na regressão logística, por exemplo, o treinamento estima coeficientes; as previsões usam esses coeficientes.
+
+Algoritmos \textbf{baseados em instâncias} armazenam exemplos de treinamento e usam sua semelhança com uma nova entrada para realizar previsões. O $k$-NN classifica uma amostra consultando os vizinhos mais próximos.
+
+Assim, nos métodos baseados em modelos, grande parte do trabalho ocorre no ajuste; nos baseados em instâncias, uma parcela importante ocorre na consulta. O $k$-NN também é um modelo preditivo, mas não ajusta previamente uma função paramétrica global.
+\questao{6}{Treinamento, validação e teste}
+\begin{enunciado}
+    Qual o objetivo do conjunto de treinamento, conjunto de validação e conjunto de teste?
+\end{enunciado}
+\textbf{Resposta.}
+\begin{itemize}
+    \item \textbf{Treinamento:} estimar os parâmetros e aprender os padrões usados pelo modelo. Estatísticas de pré-processamento, como médias e desvios padrão, também devem ser estimadas com esses dados.
+    \item \textbf{Validação:} comparar alternativas e escolher hiperparâmetros, atributos e outras decisões de modelagem. Pode ser implementada por uma divisão fixa ou por validação cruzada.
+    \item \textbf{Teste:} avaliar o desempenho final em dados que não participaram do treinamento nem das decisões de seleção do modelo.
+\end{itemize}
+Usar repetidamente o teste para tomar decisões faz com que ele deixe de representar uma avaliação independente. As divisões também devem respeitar a estrutura dos dados, por exemplo, tempo ou grupos de indivíduos.
+\Needspace{10\baselineskip}
+\section{Regressão e regularização}
+\questao{7}{Suposições da regressão linear}
+\begin{enunciado}
+    Para que os estimadores de uma regressão linear sejam confiáveis, o modelo deve seguir certas suposições. Descreva pelo menos três delas (ex: linearidade, homocedasticidade, independência).
+\end{enunciado}
+\textbf{Resposta.}
+Considere $y_i=\beta_0+\sum_{j=1}^{p}\beta_jx_{ij}+\varepsilon_i$. Entre as suposições relevantes estão:
+\begin{enumerate}
+    \item \textbf{Linearidade da média condicional:} $\mathbb{E}[y\mid\mathbf{x}]=\beta_0+\sum_j\beta_jx_j$. A linearidade é nos parâmetros; atributos transformados, como $x^2$, podem integrar o modelo.
+    \item \textbf{Exogeneidade:} $\mathbb{E}[\varepsilon\mid X]=0$. O erro não deve conter um componente sistemático associado aos regressores. A omissão de uma variável relevante correlacionada com eles pode violar essa condição.
+    \item \textbf{Homocedasticidade:} $\operatorname{Var}(\varepsilon_i\mid X)=\sigma^2$. A variância dos erros é constante. Sua violação pode comprometer os erros padrão usuais e a eficiência dos estimadores.
+    \item \textbf{Independência dos erros:} erros de observações diferentes não dependem uns dos outros. Para os resultados de Gauss--Markov, a ausência de correlação entre eles é suficiente. Séries temporais frequentemente exigem atenção à autocorrelação.
+    \item \textbf{Ausência de multicolinearidade perfeita:} nenhuma coluna explicativa é combinação linear exata das demais. Isso permite identificar unicamente os coeficientes por mínimos quadrados.
+\end{enumerate}
+A \textbf{normalidade dos erros} é uma hipótese adicional usada na inferência clássica exata em amostras pequenas. Não é necessária para que os estimadores de mínimos quadrados sejam não viesados sob exogeneidade.
+\questao{8}{Coeficiente de determinação}
+\begin{enunciado}
+    O que representa o coeficiente de determinação $R^2$ em um modelo de regressão? Por que um $R^2$ muito próximo de 1 nem sempre garante que o modelo fará boas previsões em novos dados?
+\end{enunciado}
+\textbf{Resposta.}
+Para respostas não constantes, define-se
+\[
+    R^2=1-\frac{\sum_{i=1}^{n}(y_i-\widehat y_i)^2}{\sum_{i=1}^{n}(y_i-\overline y)^2}.
+\]
+Ele compara o erro quadrático do modelo com o erro de prever sempre a média das respostas avaliadas. No ajuste usual por mínimos quadrados com intercepto, representa a fração da variabilidade amostral explicada pelo modelo: $R^2=0{,}8$ corresponde a 80\% dessa variabilidade.
+
+Um $R^2$ próximo de 1 \textbf{no treinamento} pode resultar de sobreajuste: o modelo aprende também ruído e particularidades daquela amostra. Vazamento de dados e mudanças na distribuição também podem prejudicar previsões futuras. É necessário avaliar em dados independentes, usando, por exemplo, $R^2$, MAE e RMSE.
+
+Em dados de teste, $R^2$ pode ser negativo: nesse caso, o modelo erra mais, em termos quadráticos, do que a referência baseada na média desses dados.
+\questao{9}{Regularização Ridge}
+\begin{enunciado}
+    A regularização Ridge ($L_2$) adiciona um termo de penalidade à função de perda proporcional ao quadrado da magnitude dos coeficientes. Explique como esse método diminui a possibilidade de um overfitting.
+\end{enunciado}
+\textbf{Resposta.}
+Uma forma da função objetivo Ridge é
+\[
+    \min_{\beta_0,\boldsymbol\beta}\left\{
+    \frac{1}{n}\sum_{i=1}^{n}(y_i-\beta_0-\mathbf{x}_i^\top\boldsymbol\beta)^2
+    +\alpha\sum_{j=1}^{p}\beta_j^2\right\}.
+\]
+A penalidade torna custoso obter um pequeno ganho no ajuste por meio de coeficientes muito grandes. Isso contrai os coeficientes, reduz a sensibilidade às flutuações do treinamento e tende a diminuir a variância do modelo, inclusive quando há atributos fortemente correlacionados.
+
+Há uma troca entre viés e variância: a Ridge introduz viés, mas pode reduzir o erro em dados novos. O valor de $\alpha$ deve ser escolhido por validação. Regularização excessiva provoca subajuste. Usualmente, o intercepto não é penalizado e os atributos são padronizados antes do ajuste.
+\questao{10}{Intensidade da regularização}
+\begin{enunciado}
+    Discuta o papel do hiperparâmetro de regularização $\alpha$. O que acontece com o modelo quando $\alpha=0$ e quando $\alpha\to\infty$?
+\end{enunciado}
+\textbf{Resposta.}
+O hiperparâmetro $\alpha\geq0$ controla o peso da penalidade em relação ao erro de ajuste.
+\begin{itemize}
+    \item \textbf{$\alpha=0$:} a penalidade desaparece e recupera-se a regressão por mínimos quadrados ordinários, sem regularização.
+    \item \textbf{$\alpha$ crescente:} os coeficientes são mais contraídos, reduzindo a flexibilidade do modelo. Pode diminuir o sobreajuste, mas valores excessivos causam subajuste.
+    \item \textbf{$\alpha\to\infty$:} na Ridge, os coeficientes penalizados tendem a zero. Com intercepto livre e não penalizado, o modelo tende a prever a média de $y$ do treinamento para qualquer entrada.
+\end{itemize}
+Se o intercepto também fosse penalizado, o limite poderia ser diferente. A convenção usual adotada aqui é não penalizá-lo.
+\questao{11}{Escala dos atributos na regressão}
+\begin{enunciado}
+    Qual a importância de normalização ou padronização em um processo de regressão linear múltipla?
+\end{enunciado}
+\textbf{Resposta.}
+Colocar os atributos em escalas comparáveis melhora o condicionamento numérico e pode acelerar métodos de otimização, como o gradiente descendente. Duas transformações usuais são
+\[
+    \text{padronização: }z_j=\frac{x_j-\mu_j}{\sigma_j},\qquad
+    \text{min--max: }x'_j=\frac{x_j-\min(x_j)}{\max(x_j)-\min(x_j)}.
+\]
+Na Ridge e no Lasso, a escala é especialmente importante: as penalidades atuam sobre os coeficientes. Um atributo de grande magnitude pode produzir a mesma contribuição à previsão com um coeficiente menor e, sem escalonamento, sofrer menor penalização.
+
+\textbf{Distinção importante:} na regressão por mínimos quadrados sem regularização, com intercepto e solução bem definida, mudar linearmente a escala de um atributo não muda as previsões em aritmética exata; o coeficiente se reajusta. Portanto, não é correto afirmar que uma escala maior sempre faz o atributo dominar esse ajuste.
+
+Médias, desvios e extremos devem ser estimados somente no treinamento e reaplicados à validação e ao teste. Atributos constantes precisam de tratamento para evitar divisão por zero.
+\questao{12}{Seleção de atributos com Lasso}
+\begin{enunciado}
+    A regularização Lasso ($L_1$) utiliza o valor absoluto dos coeficientes na penalidade. Qual a principal vantagem teórica do Lasso em relação à Ridge quando temos um modelo com muitas variáveis irrelevantes?
+\end{enunciado}
+\textbf{Resposta.}
+O Lasso minimiza uma perda com penalidade $\alpha\sum_{j=1}^{p}|\beta_j|$. Essa penalidade pode levar coeficientes a serem \textbf{exatamente zero}, produzindo um modelo esparso e realizando seleção de atributos durante o ajuste.
+
+Quando muitas variáveis não ajudam a prever a resposta, essa propriedade pode simplificar o modelo e facilitar sua interpretação. A Ridge usa $\alpha\sum_j\beta_j^2$ e normalmente apenas aproxima os coeficientes de zero, sem eliminá-los exatamente.
+
+A seleção do Lasso não garante identificar todas e somente as variáveis relevantes: depende de $\alpha$, da quantidade de dados e das correlações entre os atributos.
+\Needspace{10\baselineskip}
+\section{Avaliação e classificação}
+\questao{13}{Limitações da acurácia}
+\begin{enunciado}
+    A acurácia é uma métrica suficiente para avaliar um classificador em todas as situações? Justifique com um exemplo onde ela pode ser enganosa e indique qual métrica seria mais adequada.
+\end{enunciado}
+\textbf{Resposta.}
+\textbf{Não.} A acurácia é a proporção total de previsões corretas e pode esconder um desempenho ruim na classe minoritária.
+
+Considere 1.000 transações, das quais 10 são fraudulentas. Um classificador que sempre prevê ``não fraude'' acerta 990 casos e obtém \textbf{99\% de acurácia}, mas não detecta nenhuma fraude. Considerando fraude como classe positiva, seu recall é
+\[
+    \operatorname{Recall}=\frac{VP}{VP+FN}=\frac{0}{0+10}=0.
+\]
+Se a prioridade é detectar fraudes, o \textbf{recall da classe positiva} é mais informativo, acompanhado da precisão para monitorar falsos alarmes. A precisão é $VP/(VP+FP)$; nesse exemplo, seu denominador é zero, sendo comum defini-la como zero por convenção computacional.
+
+Quando se deseja equilibrar precisão e recall, pode-se usar $F_1=2VP/(2VP+FP+FN)$, que também é zero nesse caso. A métrica deve refletir os custos dos erros e o objetivo da aplicação.
+\questao{14}{AUC-ROC}
+\begin{enunciado}
+    O que representa a AUC-ROC e qual é sua interpretação probabilística? O que significa um modelo com AUC $=0{,}5$? E um com AUC $=1{,}0$?
+\end{enunciado}
+\textbf{Resposta.}
+A curva ROC relaciona a taxa de verdadeiros positivos, $\mathrm{TPR}=VP/(VP+FN)$, à taxa de falsos positivos, $\mathrm{FPR}=FP/(FP+VN)$, ao variar o limiar de decisão. A \textbf{AUC-ROC} é a área sob essa curva e resume a capacidade de ordenar positivos acima de negativos.
+
+Se $s^+$ é o escore de um positivo aleatório e $s^-$ o de um negativo aleatório, então
+\[
+    \mathrm{AUC}=P(s^+>s^-)+\frac{1}{2}P(s^+=s^-).
+\]
+Sem empates, é a probabilidade de um positivo receber escore maior que um negativo.
+\begin{itemize}
+    \item \textbf{AUC $=0{,}5$:} desempenho global de ordenação equivalente ao aleatório segundo essa métrica. Isso não exige que o algoritmo faça sorteios nem que toda a curva ROC coincida com a diagonal.
+    \item \textbf{AUC $=1$:} separação perfeita dos escores das duas classes no conjunto avaliado; todo positivo recebe escore maior que todo negativo.
+\end{itemize}
+AUC igual a 1 não garante generalização perfeita nem probabilidades bem calibradas. AUC avalia ordenação, não calibração ou desempenho de um limiar específico.
+\questao{15}{Validação cruzada K-Fold}
+\begin{enunciado}
+    Explique o conceito de validação cruzada K-Fold. Explique como ela pode ser utilizada para o ajuste dos hiperparâmetros de um modelo.
+\end{enunciado}
+\textbf{Resposta.}
+Divide-se o conjunto disponível para desenvolvimento em $K$ subconjuntos, chamados \textit{folds}. Em cada uma das $K$ rodadas, ajusta-se o modelo em $K-1$ folds e calcula-se a métrica no fold restante. Cada observação participa da validação uma vez.
+
+Para cada configuração candidata de hiperparâmetros, repete-se o procedimento e calcula-se a média das métricas de validação. Escolhe-se a configuração com melhor desempenho segundo o critério adotado. Por exemplo, comparam-se diferentes valores de $k$ do $k$-NN pela acurácia média de validação.
+
+Em seguida, reajusta-se a configuração escolhida em todos os dados de desenvolvimento e avalia-se uma única vez no teste reservado. O pré-processamento deve ser ajustado separadamente dentro de cada rodada, usando apenas os folds de treinamento.
+
+Em classificação, folds estratificados ajudam a preservar as proporções das classes. Dados temporais ou agrupados exigem divisões apropriadas, em vez de um K-Fold aleatório comum.
+\questao{16}{Treinamento e latência de previsão}
+\begin{enunciado}
+    Qual é a principal diferença entre o $k$-NN e a regressão logística no que diz respeito à fase de treinamento? Qual técnica seria mais adequada em um cenário com uma grande base de treinamento e um requisito de baixa latência para previsões?
+\end{enunciado}
+\textbf{Resposta.}
+O \textbf{$k$-NN} é um método de aprendizagem preguiçosa: seu ajuste consiste principalmente em armazenar os exemplos, podendo construir uma estrutura de busca. O trabalho de localizar vizinhos ocorre na previsão. Uma busca exata por força bruta custa aproximadamente $O(np)$ por consulta, com $n$ exemplos e $p$ atributos.
+
+A \textbf{regressão logística} aprende coeficientes por otimização durante o treinamento. Na classificação binária, uma previsão usa $\sigma(\beta_0+\mathbf{x}^{\top}\boldsymbol\beta)$, em que $\sigma(z)=1/(1+e^{-z})$, com custo aproximadamente $O(p)$.
+
+Entre as duas, a \textbf{regressão logística} tende a ser mais adequada para uma base grande e baixa latência, porque o custo da previsão não cresce diretamente com o número de exemplos de treinamento. A qualidade preditiva deve ser verificada; índices ou buscas aproximadas podem acelerar o $k$-NN.
+\questao{17}{Classificação com k-NN}
+\begin{enunciado}
+    Explique, de forma resumida, as etapas envolvidas no processo de classificação de uma nova instância usando o algoritmo $k$-NN.
+\end{enunciado}
+\textbf{Resposta.}
+\begin{enumerate}
+    \item Aplicar à nova instância o mesmo pré-processamento ajustado no treinamento, como a padronização dos atributos.
+    \item Calcular sua distância aos exemplos de treinamento segundo a métrica escolhida, por exemplo, a euclidiana.
+    \item Selecionar os $k$ exemplos mais próximos.
+    \item Agregar seus rótulos por votação majoritária ou por votação ponderada, dando maior peso aos vizinhos mais próximos.
+    \item Atribuir a classe vencedora. Se houver empate, utilizar uma regra previamente definida.
+\end{enumerate}
+O valor de $k$ e a métrica de distância são hiperparâmetros. Por exemplo, se os cinco vizinhos têm rótulos A, A, B, A e B, a votação majoritária prevê A.
+\Needspace{10\baselineskip}
+\section{Árvores de decisão}
+\questao{18}{Estrutura de uma árvore de decisão}
+\begin{enunciado}
+    Defina árvore de decisão como modelo de aprendizado de máquina e descreva seus componentes estruturais (raiz, nós internos e folhas).
+\end{enunciado}
+\textbf{Resposta.}
+Uma \textbf{árvore de decisão} é um modelo supervisionado que divide recursivamente o espaço de atributos por meio de testes. Para prever, uma observação percorre um caminho da raiz até uma folha, de acordo com os resultados dos testes.
+\begin{itemize}
+    \item \textbf{Raiz:} nó inicial, que recebe todos os exemplos de treinamento e, quando há divisão, contém o primeiro teste.
+    \item \textbf{Nós internos:} contêm testes sobre atributos, como ``renda $\leq t$?''. Cada ramo corresponde a um resultado do teste e leva a um subconjunto dos exemplos.
+    \item \textbf{Folhas:} nós terminais que fornecem a previsão. Em classificação, normalmente apresentam a classe majoritária e/ou as proporções das classes; em regressão com perda quadrática, a média das respostas dos exemplos da folha.
+\end{itemize}
+Cada caminho define uma regra de decisão. Uma árvore sem divisões tem apenas a raiz, que também é uma folha.
+\questao{19}{Entropia de Shannon}
+\begin{enunciado}
+    Defina matematicamente a entropia de Shannon e explique seu comportamento em nós puros e em nós com distribuição uniforme das classes.
+\end{enunciado}
+\textbf{Resposta.}
+Se um nó possui $C$ classes possíveis e proporção $p_c$ de exemplos da classe $c$, sua entropia é
+\[
+    H=-\sum_{c=1}^{C}p_c\log_2 p_c,
+    \qquad \text{com }0\log_2 0=0.
+\]
+Ela mede a incerteza sobre a classe de um exemplo escolhido no nó.
+\begin{itemize}
+    \item \textbf{Nó puro:} uma classe tem probabilidade 1 e as demais 0. Portanto, $H=0$; não há incerteza sobre a classe.
+    \item \textbf{Distribuição uniforme:} $p_c=1/C$ para todas as classes. A entropia atinge seu máximo, $H=\log_2 C$.
+\end{itemize}
+No caso binário, um nó com proporções $(1,0)$ tem entropia zero; um nó com proporções $(0{,}5,0{,}5)$ tem entropia de 1 bit. Maior mistura entre classes corresponde a maior entropia.
+\questao{20}{Impureza de Gini}
+\begin{enunciado}
+    Defina a impureza de Gini e compare-a com a entropia de Shannon em termos de propriedades e uso prático.
+\end{enunciado}
+\textbf{Resposta.}
+Para proporções de classe $p_1,\ldots,p_C$, a impureza de Gini é
+\[
+    G=1-\sum_{c=1}^{C}p_c^2=\sum_{c=1}^{C}p_c(1-p_c).
+\]
+Ela corresponde à probabilidade de duas classes sorteadas independentemente segundo a distribuição do nó serem diferentes.
+
+Assim como a entropia, o Gini é zero em nós puros e máximo quando as classes estão uniformemente distribuídas. Seu máximo é $1-1/C$, enquanto o máximo da entropia é $\log_2 C$. Para duas classes igualmente frequentes, $G=0{,}5$ e $H=1$ bit.
+
+Ambos podem avaliar a qualidade de divisões em árvores de classificação pela redução ponderada de impureza. O Gini dispensa logaritmos e tem cálculo mais simples. A entropia apresenta maior sensibilidade a mudanças em proporções próximas de zero. Na prática, frequentemente produzem árvores semelhantes, mas não necessariamente escolhem as mesmas divisões.
+\questao{21}{Ganho de informação}
+\begin{enunciado}
+    O que é o ganho de informação e como ele é utilizado para escolher o melhor atributo de divisão em cada nó?
+\end{enunciado}
+\textbf{Resposta.}
+O ganho de informação é a redução da entropia proporcionada por uma divisão. Para um conjunto $S$ no nó pai e subconjuntos filhos $S_1,\ldots,S_m$,
+\[
+    IG=H(S)-\sum_{r=1}^{m}\frac{|S_r|}{|S|}\,H(S_r).
+\]
+A entropia de cada filho é ponderada pela proporção de exemplos que ele recebe. O algoritmo avalia as divisões candidatas e escolhe o atributo e, quando necessário, o limiar que proporcionam o \textbf{maior ganho}, respeitando as restrições de crescimento.
+
+\textbf{Exemplo:} um nó com 10 exemplos, cinco de cada classe, tem entropia 1 bit. Se uma divisão gera dois filhos puros de cinco exemplos, a entropia ponderada após a divisão é zero e o ganho é 1 bit. Se ambos mantiverem a proporção 50\%/50\%, o ganho será zero.
+
+Quando se usa Gini no lugar da entropia, o critério análogo é a redução ponderada da impureza de Gini.
+\questao{22}{Critérios de parada de árvores}
+\begin{enunciado}
+    Quais são os critérios de parada usados na construção de uma árvore de decisão e qual a importância de cada um para evitar o overfitting?
+\end{enunciado}
+\textbf{Resposta.}
+Os critérios mais comuns são:
+\begin{itemize}
+    \item \textbf{Nó puro:} todos os exemplos pertencem à mesma classe. Não há impureza de classificação a reduzir.
+    \item \textbf{Profundidade máxima:} limita o número de testes consecutivos e evita regras muito específicas.
+    \item \textbf{Número mínimo de exemplos para dividir:} impede novas divisões em nós com poucos dados, cujas decisões seriam instáveis.
+    \item \textbf{Número mínimo de exemplos por folha:} rejeita divisões que produzam folhas pequenas demais, reduzindo a memorização de casos isolados.
+    \item \textbf{Ganho mínimo de impureza:} só aceita uma divisão se a melhoria atingir um limiar, evitando crescimento com benefício muito pequeno.
+    \item \textbf{Número máximo de folhas:} limita a complexidade total da árvore.
+    \item \textbf{Ausência de divisão válida:} encerra o crescimento quando não existe teste capaz de separar os exemplos sob as restrições adotadas, como quando todos têm os mesmos atributos.
+\end{itemize}
+Essas restrições constituem formas de \textbf{pré-poda} e devem ser ajustadas por validação. Parar cedo demais pode causar subajuste. Outra estratégia é a \textbf{pós-poda}: crescer a árvore e depois remover ramos cujo benefício não justifica sua complexidade.
+\questao{23}{Atributos numéricos e limiares}
+\begin{enunciado}
+    Como uma árvore de decisão lida com atributos numéricos e qual o procedimento para encontrar o melhor limiar (threshold) de divisão?
+\end{enunciado}
+\textbf{Resposta.}
+Para um atributo numérico $x_j$, uma divisão binária usa o teste $x_j\leq t$. Exemplos que satisfazem o teste seguem para um filho; os demais, para o outro.
+\begin{enumerate}
+    \item Ordenar os valores do atributo presentes no nó e identificar valores distintos consecutivos $v_r<v_{r+1}$.
+    \item Considerar limiares candidatos entre esses valores, normalmente os pontos médios $t_r=(v_r+v_{r+1})/2$.
+    \item Para cada candidato, formar os dois grupos e calcular a impureza ponderada dos filhos, usando entropia ou Gini em classificação.
+    \item Descartar divisões que violem restrições, como o tamanho mínimo de uma folha.
+    \item Escolher o limiar com maior redução de impureza. Comparar também os melhores resultados dos demais atributos para selecionar a divisão do nó.
+\end{enumerate}
+Por exemplo, para valores distintos 2, 4 e 9, os limiares candidatos são 3 e 6,5. Valores iguais não são separados por um mesmo teste de limiar.
+\Needspace{10\baselineskip}
+\section{Clusterização e k-means}
+\questao{24}{Clusterização e classificação}
+\begin{enunciado}
+    O que é clusterização e em que aspecto fundamental ela se diferencia da classificação supervisionada?
+\end{enunciado}
+\textbf{Resposta.}
+\textbf{Clusterização} é o agrupamento de observações de acordo com alguma noção de semelhança ou estrutura, buscando grupos coerentes. Na formulação usual, é uma tarefa não supervisionada: os dados não trazem os rótulos dos grupos que devem ser aprendidos.
+
+A \textbf{classificação supervisionada} aprende a atribuir categorias previamente definidas a partir de exemplos rotulados. Por exemplo, descobrir perfis de clientes por comportamento de compra é clusterização; prever se um cliente cancelará o serviço usando exemplos históricos rotulados é classificação.
+
+A distinção fundamental é a presença de rótulos-alvo no treinamento. Os grupos descobertos por clusterização não precisam coincidir com classes conhecidas ou ter um significado previamente definido.
+\questao{25}{Qualidade de uma clusterização}
+\begin{enunciado}
+    O que caracteriza uma boa clusterização e quais são as características desejáveis de um método ideal de clusterização?
+\end{enunciado}
+\textbf{Resposta.}
+Em uma boa clusterização, os objetos de um mesmo grupo são semelhantes entre si (\textbf{coesão}) e objetos de grupos diferentes são distintos (\textbf{separação}), de acordo com a medida de similaridade e o objetivo da análise. Os grupos também devem ser interpretáveis e úteis no contexto da aplicação.
+
+São características desejáveis de um método:
+\begin{itemize}
+    \item escalabilidade para grandes volumes de dados;
+    \item capacidade de tratar os tipos de atributos relevantes, inclusive dados mistos;
+    \item robustez a ruído e outliers;
+    \item capacidade de reconhecer grupos com diferentes formas, tamanhos e densidades;
+    \item estabilidade diante da ordem dos dados, da inicialização e de pequenas perturbações;
+    \item bom comportamento em alta dimensionalidade;
+    \item poucos parâmetros difíceis de definir e possibilidade de incorporar conhecimento do domínio;
+    \item resultados compreensíveis e custo computacional adequado.
+\end{itemize}
+Não existe um método universalmente melhor: coesão e separação dependem da geometria adotada. Grupos alongados ou não convexos, por exemplo, podem ser válidos mesmo sem serem compactos ao redor de uma média.
+\questao{26}{Algoritmo k-means}
+\begin{enunciado}
+    Descreva detalhadamente o algoritmo $k$-means, enunciando cada uma de suas etapas e a condição de convergência.
+\end{enunciado}
+\textbf{Resposta.}
+O $k$-means divide $n$ observações numéricas em $k$ grupos e busca minimizar a soma dos quadrados das distâncias aos respectivos centroides:
+\[
+    J=\sum_{j=1}^{k}\sum_{\mathbf{x}_i\in C_j}\|\mathbf{x}_i-\boldsymbol\mu_j\|_2^2.
+\]
+O algoritmo usual de Lloyd segue estas etapas:
+\begin{enumerate}
+    \item \textbf{Preparação:} escolher os atributos, tratar dados problemáticos e ajustar suas escalas quando necessário. Definir o número de grupos $k$.
+    \item \textbf{Inicialização:} escolher $k$ centroides iniciais, por amostragem de observações ou por uma estratégia como $k$-means++.
+    \item \textbf{Atribuição:} associar cada observação ao centroide mais próximo:
+          \[
+              c_i=\operatorname*{arg\,min}_{1\leq j\leq k}\|\mathbf{x}_i-\boldsymbol\mu_j\|_2^2.
+          \]
+    \item \textbf{Atualização:} recalcular cada centroide como a média dos pontos atribuídos ao grupo:
+          \[
+              \boldsymbol\mu_j=\frac{1}{|C_j|}\sum_{\mathbf{x}_i\in C_j}\mathbf{x}_i.
+          \]
+          Se um grupo ficar vazio, é necessário aplicar uma regra de tratamento, como realocar seu centroide para uma observação distante.
+    \item \textbf{Repetição:} alternar atribuição e atualização até a estabilização.
+\end{enumerate}
+A convergência exata ocorre quando as atribuições não mudam e os centroides permanecem iguais, sob uma regra consistente de desempate. Na prática, usa-se uma tolerância para o deslocamento dos centroides ou a melhoria de $J$, além de um limite de iterações. Atingir esse limite não significa necessariamente convergir.
+
+As duas etapas centrais não aumentam $J$, que é limitado inferiormente por zero. O resultado é uma solução estável, em geral local, e não há garantia de ótimo global. Executar várias inicializações e manter a de menor $J$ reduz a dependência da inicialização.
+\questao{27}{Limitações do k-means}
+\begin{enunciado}
+    Quais são as principais limitações do algoritmo $k$-means? Para cada limitação, indique o tipo de dado ou situação em que ela se manifesta.
+\end{enunciado}
+\textbf{Resposta.}
+\begin{enumerate}
+    \item \textbf{Exige definir $k$:} ocorre quando não se conhece o número de grupos, como em segmentação exploratória. Um valor inadequado funde grupos diferentes ou fragmenta um mesmo grupo.
+    \item \textbf{Favorece grupos compactos e aproximadamente esféricos:} falha em luas entrelaçadas, anéis e grupos muito alongados, porque a atribuição ao centroide mais próximo cria regiões de Voronoi convexas no espaço euclidiano.
+    \item \textbf{Dificuldade com tamanhos e densidades muito diferentes:} um grupo grande e disperso pode receber vários centroides, enquanto grupos pequenos próximos podem ser fundidos, pois o objetivo minimiza o erro quadrático total.
+    \item \textbf{Sensibilidade a outliers:} valores extremos deslocam a média e pesam muito na distância ao quadrado. Isso aparece em dados com erros de medição ou valores raros muito elevados.
+    \item \textbf{Sensibilidade à escala:} em dados com renda em reais e idade em anos, a renda pode dominar as distâncias por sua magnitude numérica se as escalas não forem ajustadas.
+    \item \textbf{Dependência da inicialização:} diferentes centroides iniciais podem levar a soluções locais distintas em dados com partições concorrentes.
+    \item \textbf{Restrição a uma geometria numérica adequada:} médias e distâncias euclidianas não representam naturalmente atributos nominais, como cor ou profissão. Codificá-los por números arbitrários introduz distâncias artificiais.
+    \item \textbf{Alta dimensionalidade:} muitos atributos irrelevantes ou redundantes podem tornar as distâncias pouco informativas e esconder os grupos.
+\end{enumerate}
+Além disso, o $k$-means atribui todos os pontos a algum grupo: não identifica explicitamente uma classe de ruído.
+\questao{28}{Matriz de dissimilaridade e distâncias}
+\begin{enunciado}
+    Defina a matriz de dissimilaridade e liste pelo menos cinco métricas de distância utilizadas em problemas de clusterização.
+\end{enunciado}
+\textbf{Resposta.}
+A \textbf{matriz de dissimilaridade} $D\in\mathbb{R}^{n\times n}$ armazena em cada posição $D_{ij}=d(\mathbf{x}_i,\mathbf{x}_j)$ o grau de diferença entre as observações $i$ e $j$. Valores menores indicam maior semelhança. Para uma distância métrica, $D_{ij}\geq0$, $D_{ii}=0$ e $D_{ij}=D_{ji}$; a função também satisfaz a desigualdade triangular. Uma dissimilaridade genérica não precisa satisfazer todas as propriedades de uma métrica.
+
+Cinco exemplos de métricas são:
+\begin{enumerate}
+    \item \textbf{Euclidiana:} $d(\mathbf{x},\mathbf{y})=\sqrt{\sum_{r=1}^{p}(x_r-y_r)^2}$. Mede distância em linha reta em espaços numéricos.
+    \item \textbf{Manhattan:} $d(\mathbf{x},\mathbf{y})=\sum_{r=1}^{p}|x_r-y_r|$. Soma as diferenças absolutas por coordenada.
+    \item \textbf{Chebyshev:} $d(\mathbf{x},\mathbf{y})=\max_r|x_r-y_r|$. Considera a maior diferença entre coordenadas.
+    \item \textbf{Hamming:} $d(\mathbf{x},\mathbf{y})=\sum_{r=1}^{p}\mathbb{1}(x_r\neq y_r)$. Conta posições diferentes em sequências ou vetores categóricos de mesmo comprimento; também pode ser normalizada por $p$.
+    \item \textbf{Jaccard:} $d(A,B)=1-|A\cap B|/|A\cup B|$, para conjuntos com união não vazia; define-se $d(\varnothing,\varnothing)=0$. É útil para conjuntos de itens e atributos binários de presença/ausência, sem valorizar ausências conjuntas.
+\end{enumerate}
+A escolha depende do tipo de dado e da noção de semelhança desejada. O $k$-means clássico usa distâncias euclidianas ao quadrado em sua função objetivo; não basta substituir essa distância por qualquer outra e manter a atualização pela média.
+\questao{29}{Escalonamento antes do k-means}
+\begin{enunciado}
+    Por que é recomendável normalizar os dados antes de aplicar o $k$-means e qual técnica é mais comumente utilizada?
+\end{enunciado}
+\textbf{Resposta.}
+O $k$-means depende de distâncias euclidianas. Se os atributos têm escalas muito diferentes, aqueles com maior amplitude ou variância podem dominar o cálculo, mesmo sem serem mais relevantes. Por exemplo, diferenças de milhares de reais em renda podem se sobrepor a diferenças de algumas décadas em idade.
+
+Uma técnica muito utilizada é a \textbf{padronização por escore-$z$}:
+\[
+    z_{ij}=\frac{x_{ij}-\mu_j}{\sigma_j},
+\]
+em que $\mu_j$ e $\sigma_j$ são a média e o desvio padrão do atributo $j$. Cada atributo não constante passa a ter média zero e variância unitária segundo a convenção utilizada.
+
+Outra opção comum é a normalização min--max para $[0,1]$. A escolha depende do problema; a padronização não elimina outliers nem garante grupos melhores em toda situação. Se as escalas originais expressarem pesos relevantes do domínio, modificá-las também modifica a noção de semelhança. Atributos constantes devem ser removidos ou tratados separadamente.
+\questao{30}{Três situações de falha do k-means}
+\begin{enunciado}
+    Descreva três situações práticas em que o algoritmo $k$-means falha em produzir uma boa clusterização e explique o motivo em cada caso.
+\end{enunciado}
+\textbf{Resposta.}
+\begin{enumerate}
+    \item \textbf{Pontos formando dois anéis concêntricos ou duas luas.} Os grupos reais são não convexos. A regra de proximidade a centroides produz fronteiras lineares entre pares de grupos e tende a cortar essas formas em partes, misturando pontos de grupos reais diferentes. Métodos baseados em densidade ou em grafos podem representar melhor essa geometria.
+    \item \textbf{Clientes com perfis usuais e poucos valores extremos de renda ou gasto.} Como o centroide é uma média e o objetivo usa distâncias ao quadrado, os extremos atraem os centroides ou consomem um grupo para representar poucos pontos, prejudicando os perfis predominantes. Tratamento criterioso de extremos ou métodos como $k$-medoids podem ser mais adequados.
+    \item \textbf{Um grupo grande e disperso junto de pequenos grupos compactos.} Reduzir o erro quadrático do grupo grande pode ser mais vantajoso para o objetivo do algoritmo do que preservar cada grupo pequeno. Assim, ele pode dividir o grupo grande e fundir os pequenos, principalmente quando próximos. Modelos com covariâncias próprias por grupo ou métodos adaptados à densidade podem representar melhor essa estrutura.
+\end{enumerate}
+Nos três casos, a falha decorre de uma incompatibilidade entre a estrutura desejada e o objetivo geométrico do $k$-means; aumentar o número de iterações não resolve essa incompatibilidade.
+\end{document}
