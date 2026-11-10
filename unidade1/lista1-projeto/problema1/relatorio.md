@@ -1,6 +1,5 @@
 # Problema 1 — Previsão da potência de uma usina
 
-
 ## 1. Dados e preparação
 
 - **Dados:** 9.568 observações de `AT`, `V`, `AP`, `RH` e potência `PE` (MW).

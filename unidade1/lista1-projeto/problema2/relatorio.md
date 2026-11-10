@@ -1,6 +1,5 @@
 # Problema 2 — Presença de doença cardíaca
 
-
 ## 1. Dados e preparação
 
 - **Dados:** 303 registros Cleveland e 13 preditores clínicos.

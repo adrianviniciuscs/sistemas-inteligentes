@@ -1,6 +1,5 @@
 # Problema 4 — Risco de crédito com árvore de decisão
 
-
 ## 1. Dados e preparação
 
 - **Dados:** 1.000 solicitações, sendo 700 de bom risco e 300 de mau risco; nenhum ausente.
@@ -44,4 +43,4 @@ A folha com mais exemplos de mau risco no treino contém **158 maus e 164 bons**
 
 ## 4. Interpretação e conclusão
 
-**Resposta ao enunciado.** A acurácia foi **0,6850**, abaixo da linha de base de 0,70. O erro mais frequente é classificar **53 maus como bons**. Conceder crédito a um mau pagador pode causar perda do valor emprestado; recusar um bom pagador tende a causar perda da oportunidade de negócio. O custo relativo precisa ser definido na aplicação. Para reduzir o primeiro erro, testaríamos pesos maiores para a classe `mau` ou outro limiar **na validação**, medindo também quantos bons clientes seriam recusados.
+**Resposta ao enunciado.** A acurácia foi **0,6850**, abaixo da linha de base de 0,70. O erro mais frequente é classificar **53 maus como bons**. Conceder crédito a um mau pagador pode causar perda do valor emprestado; recusar um bom pagador tende a causar perda da oportunidade de negócio. O custo relativo precisa ser definido na aplicação. Para reduzir maus riscos previstos como bons, propomos testar pesos de classe e escolher os parâmetros pelo custo médio na validação, acompanhando o aumento das recusas de bons clientes. O modelo apresentado permanece sem pesos de classe.

@@ -1,6 +1,5 @@
 # Problema 3 — Qualidade de vinhos com k-NN
 
-
 ## 1. Dados e preparação
 
 - **Dados:** 1.599 vinhos tintos, 11 atributos e nenhum ausente.
@@ -13,22 +12,22 @@ O k-NN usa distâncias euclidianas: sem padronização, atributos de escala maio
 
 ## 2. Análise e seleção
 
-Testamos `k = 1,…,100` em validação cruzada estratificada de cinco folds no treino. O maior valor médio de acurácia foi **0,7195 em k=82**. Valores muito pequenos tornam a decisão sensível a casos individuais; valores altos suavizam as fronteiras e favorecem classes frequentes. A escolha por acurácia beneficia as duas classes maiores e não garante detecção da classe `bom`.
+Testamos `k = 1,…,19` em validação cruzada estratificada de cinco folds no treino. O maior valor médio de acurácia foi **0,7057 em k=11**. Valores muito pequenos tornam a decisão sensível a casos individuais; valores altos suavizam as fronteiras e favorecem classes frequentes. A escolha por acurácia beneficia as duas classes maiores e não garante detecção da classe `bom`.
 
 ## 3. Modelo e resultados
 
 | Classe real / prevista | Ruim | Médio | Bom |
 |---|---:|---:|---:|
-| Ruim | 87 | 41 | 0 |
-| Médio | 30 | 111 | 0 |
+| Ruim | 92 | 36 | 0 |
+| Médio | 29 | 112 | 0 |
 | Bom | 0 | 3 | 0 |
 
 | Classe | Precisão | Recall | F1 |
 |---|---:|---:|---:|
-| Ruim | 0,7436 | 0,6797 | 0,7102 |
-| Médio | 0,7161 | 0,7872 | 0,7500 |
+| Ruim | 0,7603 | 0,7188 | 0,7390 |
+| Médio | 0,7417 | 0,7943 | 0,7671 |
 | Bom | 0 | 0 | 0 |
 
 ## 4. Interpretação e conclusão
 
-**Resposta ao enunciado.** A acurácia total foi **0,7279**. O par `ruim`–`médio` concentrou **71 erros** (41 em um sentido e 30 no outro). Os três vinhos `bom` do teste foram classificados como `médio`; a classe rara impede uma estimativa estável de seu desempenho e evidencia a limitação da acurácia global.
+**Resposta ao enunciado.** A acurácia total foi **0,7500**. O par `ruim`–`médio` concentrou **65 erros** (36 em um sentido e 29 no outro). Os três vinhos `bom` do teste foram classificados como `médio`; a classe rara impede uma estimativa estável de seu desempenho e evidencia a limitação da acurácia global.
