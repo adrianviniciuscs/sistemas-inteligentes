@@ -1,0 +1,314 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[a4paper, margin=1.8cm, top=2.1cm, bottom=2.0cm, headheight=19pt]{geometry}
+\usepackage{needspace}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{csquotes}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usepackage[hidelinks]{hyperref}
+\usepackage[brazilian]{cleveref}
+
+% Paleta de cores sóbria
+\definecolor{azulufersa}{HTML}{1B365D}
+\definecolor{cinzatexto}{HTML}{4A5568}
+\definecolor{fundocaixa}{HTML}{F7FAFC}
+\definecolor{bordacaixa}{HTML}{CBD5E0}
+
+% Formatação de seções e questões
+\titleformat{\section}
+  {\large\bfseries\color{azulufersa}}
+  {\thesection.}{0.5em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{1.1em}{0.5em}
+
+\newcommand{\questao}[2]{%
+  \needspace{4\baselineskip}%
+  \vspace{0.45em}\noindent
+  {\color{azulufersa}\bfseries Questão #1 --- #2}\par\nopagebreak\vspace{0.15em}\noindent\ignorespaces%
+}
+
+% Listas compactas e semânticas
+\setlist[description]{
+  leftmargin=1.2em,
+  labelindent=0pt,
+  itemsep=1.5pt,
+  topsep=2pt,
+  parsep=0pt,
+  font=\bfseries\color{azulufersa!85!black}
+}
+\setlist[enumerate]{
+  leftmargin=1.6em,
+  itemsep=1.5pt,
+  topsep=2pt,
+  parsep=0pt
+}
+\setlist[itemize]{
+  leftmargin=1.4em,
+  itemsep=1.5pt,
+  topsep=2pt,
+  parsep=0pt
+}
+
+% Cabeçalho e rodapé
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{cinzatexto} PAM0466 --- Sistemas Inteligentes (2026.2)}
+\fancyhead[R]{\footnotesize\color{cinzatexto} 2ª Lista de Exercícios (Resolução Resumida)}
+\fancyfoot[C]{\footnotesize\color{cinzatexto}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{bordacaixa}\leaders\hrule height \headrulewidth\hfill}}
+
+\begin{document}
+
+% Cabeçalho inicial compacto
+\begin{center}
+  {\small\textsc{Universidade Federal Rural do Semi-Árido --- Campus Pau dos Ferros}}\\[2pt]
+  {\Large\bfseries\color{azulufersa} 2ª Lista de Exercícios --- Resolução Resumida}\\[3pt]
+  {\small\color{cinzatexto} PAM0466 · Sistemas Inteligentes · Semestre 2026.2 · Docente: Pedro Thiago Valério de Souza}
+\end{center}
+\vspace{0.2em}
+
+% ============================================================================
+\section{Fundamentos e Arquiteturas de Redes Neurais}
+% ============================================================================
+
+\questao{1}{Habilidade de generalização}
+É a capacidade da rede neural de \textbf{acertar em dados novos (nunca vistos no treinamento)} que pertencem ao mesmo padrão/distribuição do problema.
+\begin{description}
+  \item[Ideia-chave] Aprender o padrão geral dos dados, e não apenas \enquote{decorar} o conjunto de treino (\emph{overfitting}).
+  \item[Como se mede] Avaliando o desempenho da rede em um conjunto de \textbf{teste} separado.
+\end{description}
+
+\questao{2}{Papel da função de ativação e importância da não linearidade}
+\begin{description}
+  \item[Papel] Recebe a soma ponderada das entradas ($u$) e define a saída do neurônio ($y = g(u)$), \textbf{limitando a amplitude} da saída (ex.: $[0,1]$, $[-1,1]$) e definindo o regime de disparo.
+  \item[Por que não linearidade é crucial] Compor várias funções lineares sempre resulta em \textbf{uma única função linear}. Sem função de ativação não linear, uma rede com várias camadas teria o mesmo poder de uma rede de 1 camada só, não aprendendo fronteiras curvas nem problemas como o XOR.
+\end{description}
+
+\questao{3}{\emph{Feedforward} de camada simples vs.\ múltiplas camadas}
+Em ambas, o sinal flui apenas \textbf{para frente} (entrada $\to$ saída, sem realimentação). A diferença está na presença de \textbf{camadas ocultas}:
+\begin{description}
+  \item[Camada simples] Só tem entrada $\to$ saída (1 camada computacional). Ex.: Perceptron e Adaline. Só gera fronteiras \textbf{lineares (hiperplanos)}.
+  \item[Múltiplas camadas] Possui \textbf{uma ou mais camadas ocultas} entre entrada e saída. Ex.: MLP e CNN. Extrai características em etapas e constrói fronteiras \textbf{não lineares}.
+\end{description}
+
+% ============================================================================
+\section{Perceptron e Separabilidade Linear}
+% ============================================================================
+
+\questao{4}{Arquitetura do Perceptron e tipos de valores aceitos}
+Classificador linear de \textbf{camada única} composto por: entradas ($x_i$), pesos ($w_i$), limiar/viés ($\theta$ ou $b$), somador linear ($u = \sum w_i x_i - \theta$) e função de ativação \textbf{degrau} (unipolar ou bipolar).
+\begin{description}
+  \item[Entradas ($\mathbf{x}$)] Valores \textbf{reais contínuos} ou \textbf{discretos} (binários $\{0,1\}$ ou bipolares $\{-1,+1\}$).
+  \item[Pesos ($\mathbf{w}$) e limiar ($\theta$)] Valores \textbf{reais contínuos} (positivos, negativos ou zero).
+  \item[Saída ($y$)] Sempre \textbf{discreta} ($\{0,1\}$ ou $\{-1,+1\}$).
+\end{description}
+
+\questao{5}{Treinamento do Perceptron e atualização de pesos}
+Treinamento supervisionado por \textbf{correção de erros}:
+\begin{enumerate}
+  \item Inicializa os pesos com valores pequenos aleatórios (ou zeros) e define a taxa de aprendizado $\eta$.
+  \item Para cada amostra, calcula o potencial $u$ e a saída $y = g(u)$.
+  \item Compara $y$ com a saída desejada $d$: se $y = d$, \textbf{não altera} os pesos; se $y \neq d$, atualiza por:
+  \[
+    w_i^{\text{novo}} = w_i^{\text{atual}} + \eta\,(d - y)\,x_i
+  \]
+  \item Repete por épocas até concluir uma \textbf{época inteira sem erros} (ou atingir o limite de épocas).
+\end{enumerate}
+
+\questao{6}{Teorema da convergência do Perceptron}
+\begin{description}
+  \item[Dados linearmente separáveis] O Perceptron \textbf{sempre converge} e encontra um hiperplano que separa todas as amostras em um \textbf{número finito de iterações}, independente dos pesos iniciais.
+  \item[Dados não linearmente separáveis] \textbf{Nunca converge}; o hiperplano oscila indefinidamente (corrigir um ponto faz errar outro). É necessário definir um critério de parada externo (ex.: número máximo de épocas).
+\end{description}
+
+% ============================================================================
+\section{Rede Adaline e Regra Delta}
+% ============================================================================
+
+\questao{7}{Diferença entre regra do Perceptron e regra Delta (Adaline) no cálculo do erro}
+A diferença está no ponto em que o erro é calculado:
+\begin{description}
+  \item[Perceptron (pós-ativação / discreto)] Calcula o erro \textbf{depois} da função degrau: $e = d - y$. Só indica se acertou ou errou.
+  \item[Adaline / Regra Delta (pré-ativação / contínuo)] Calcula o erro \textbf{antes} da função degrau, usando o potencial linear $u$: $e = d - u$. Por ser contínuo e diferenciável, aplica \textbf{gradiente descendente} para minimizar o Erro Quadrático Médio (EQM).
+\end{description}
+
+\questao{8}{Por que o hiperplano do Adaline é único (ao contrário do Perceptron)?}
+\begin{description}
+  \item[Perceptron] Para assim que acerta todas as amostras. Como há infinitos hiperplanos possíveis entre duas classes separáveis, ele aceita o \textbf{primeiro que encontrar} (depende dos pesos iniciais e da ordem dos dados).
+  \item[Adaline] Minimiza o \textbf{EQM}, cuja superfície de erro forma um \textbf{paraboloide convexo} (tigela) com \textbf{um único mínimo global}. Assim, converge sempre para o mesmo hiperplano ótimo, mais centralizado e robusto a ruídos.
+\end{description}
+
+\questao{9}{Critério matemático de parada no Adaline}
+Como o erro contínuo ($d - u$) raramente chega a zero exato, o treinamento para quando o \textbf{EQM estabiliza} entre duas épocas consecutivas:
+\[
+  \mathrm{EQM} = \frac{1}{N}\sum_{k=1}^{N}\bigl(d^{(k)} - u^{(k)}\bigr)^2,
+  \qquad
+  \bigl|\mathrm{EQM}_{\text{atual}} - \mathrm{EQM}_{\text{anterior}}\bigr| \le \varepsilon
+\]
+em que $\varepsilon > 0$ é uma tolerância bem pequena (ex.: $10^{-6}$).
+
+\questao{10}{Influência da taxa de aprendizagem ($\eta$)}
+Controla o \textbf{tamanho do passo} na atualização dos pesos:
+\begin{description}
+  \item[$\eta$ muito pequena] Convergência \textbf{muito lenta} (muitas épocas). No Adaline, pode provocar parada prematura por variação minúscula do EQM.
+  \item[$\eta$ muito grande] Gera \textbf{oscilações} fortes; no Adaline, pode \textbf{ultrapassar o mínimo e divergir} (erro crescendo sem controle).
+\end{description}
+
+\questao{11}{É possível aplicar o Perceptron no problema dado?}
+\textbf{Não é possível}, pois o conjunto \textbf{não é linearmente separável} (equivale ao problema lógico \textbf{XNOR/XOR}).
+
+\begin{minipage}[c]{0.66\linewidth}
+\begin{description}
+  \item[Justificativa geométrica] Os 4 pontos formam os vértices de um quadrado no plano $(x_1, x_2)$: a classe $A$ ocupa uma diagonal e a classe $B$ a outra. Nenhuma reta única separa as duas diagonais.
+  \item[Justificativa algébrica] Supondo $A > 0$ e $B < 0$ em $w_1 x_1 + w_2 x_2 - \theta$:
+  \begin{itemize}
+    \item Somando os dois pontos de $A$: $w_1 + w_2 - 2\theta > 0 \implies w_1 + w_2 > 2\theta$.
+    \item Somando os dois pontos de $B$: $w_1 + w_2 - 2\theta < 0 \implies w_1 + w_2 < 2\theta$.
+  \end{itemize}
+  \textbf{Contradição!} Logo, não existe hiperplano separador.
+\end{description}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.29\linewidth}
+\centering
+\begin{tikzpicture}[scale=2.2]
+  \draw[->, thin, cinzatexto] (0,0) -- (1.05,0) node[right] {\scriptsize $x_1$};
+  \draw[->, thin, cinzatexto] (0,0) -- (0,1.05) node[above] {\scriptsize $x_2$};
+  \draw[dashed, azulufersa!60] (0.25,0.25) -- (0.75,0.75);
+  \draw[dotted, thick, red!65!black] (0.25,0.75) -- (0.75,0.25);
+  \fill[azulufersa] (0.25,0.25) circle (1.4pt) node[below left] {\scriptsize $A$};
+  \fill[azulufersa] (0.75,0.75) circle (1.4pt) node[above right] {\scriptsize $A$};
+  \draw[red!70!black, fill=white, thick] (0.25,0.75) circle (1.4pt) node[above left] {\scriptsize $B$};
+  \draw[red!70!black, fill=white, thick] (0.75,0.25) circle (1.4pt) node[below right] {\scriptsize $B$};
+  \node[below, font=\tiny, cinzatexto] at (0.25,0) {$0{,}25$};
+  \node[below, font=\tiny, cinzatexto] at (0.75,0) {$0{,}75$};
+  \node[left, font=\tiny, cinzatexto] at (0,0.25) {$0{,}25$};
+  \node[left, font=\tiny, cinzatexto] at (0,0.75) {$0{,}75$};
+\end{tikzpicture}
+\end{minipage}
+
+% ============================================================================
+\section{MLP e \emph{Backpropagation}}
+% ============================================================================
+
+\questao{12}{Diferença estrutural entre MLP e Perceptron simples}
+\begin{description}
+  \item[Diferenças estruturais] A MLP possui \textbf{uma ou mais camadas ocultas} e usa \textbf{funções de ativação não lineares e diferenciáveis} (sigmoide, tanh, ReLU), enquanto o Perceptron simples tem só 1 camada e usa degrau.
+  \item[Por que resolve problemas não lineares] Cada neurônio oculto traça um hiperplano diferente e projeta os dados em um novo espaço onde as classes se tornam separáveis, permitindo combinar hiperplanos em fronteiras \textbf{curvas ou fechadas}.
+\end{description}
+
+\questao{13}{Gradiente local $\delta_j^{(n)}$ na saída vs.\ camadas ocultas}
+O \textbf{gradiente local} ($\delta_j$) mede a sensibilidade do erro da rede ao potencial de ativação ($u_j$) do neurônio $j$ --- indica a \enquote{culpa} daquele neurônio no erro.
+\begin{description}
+  \item[Camada de saída] O erro é conhecido diretamente ($d_j - y_j$):
+  \[
+    \delta_j = (d_j - y_j)\,g'(u_j)
+  \]
+  \item[Camadas ocultas] Não há saída desejada $d_j$; o erro é \textbf{retropropagado} da camada seguinte (soma dos gradientes seguintes ponderados pelos pesos):
+  \[
+    \delta_j = g'(u_j)\sum_{k} \delta_k\,w_{kj}
+  \]
+\end{description}
+
+\questao{14}{Regra de atualização dos pesos no \emph{Backpropagation} e papel de $\eta$}
+\begin{description}
+  \item[Regra Delta Generalizada]
+  \[
+    w_{ji}^{\text{novo}} = w_{ji}^{\text{atual}} + \eta\,\delta_j\,y_i
+  \]
+  onde $\eta$ é a taxa de aprendizado, $\delta_j$ é o gradiente local do neurônio destino $j$ e $y_i$ é a entrada vinda do neurônio anterior $i$.
+  \item[Papel de $\eta$] Define o tamanho do passo na descida do gradiente. Muito pequena $\to$ treino lento e risco de prender em \textbf{mínimos locais}/platôs; muito grande $\to$ \textbf{oscilações}, divergência ou saturação das ativações.
+\end{description}
+
+\questao{15}{\emph{Overfitting} e \emph{Early Stopping}}
+\begin{description}
+  \item[\emph{Overfitting} (sobreajuste)] A rede \enquote{decora} o conjunto de treino (inclusive ruídos): erro de \textbf{treino muito baixo}, mas erro em \textbf{dados novos alto} (perde generalização).
+  \item[\emph{Early Stopping} (parada antecipada)] Separa-se um conjunto de \textbf{validação}. Os pesos são ajustados só no treino, mas o erro é medido na validação a cada época. Quando o erro de \textbf{validação começa a subir}, o treino é interrompido e restauram-se os pesos da época de menor erro de validação.
+\end{description}
+
+\questao{16}{Funções de ativação na MLP (ocultas e saída)}
+\begin{description}
+  \item[Camadas ocultas] Funções \textbf{não lineares e diferenciáveis}: \textbf{ReLU} (padrão em redes profundas, rápida e reduz desaparecimento do gradiente), \textbf{tanh} (centrada em zero) e \textbf{Sigmoide/Logística}.
+  \item[Camada de saída] Escolhida conforme a natureza da tarefa:
+\end{description}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Tarefa} & \textbf{Função na saída} & \textbf{Intervalo / Interpretação} \\
+  \midrule
+  Regressão (valor contínuo) & Linear / Identidade ($g(u)=u$) & $(-\infty, +\infty)$ \\
+  Classificação binária $\{0,1\}$ & Sigmoide (Logística) & $(0, 1)$ --- probabilidade \\
+  Classificação binária $\{-1,+1\}$ & Tangente Hiperbólica (tanh) & $(-1, 1)$ \\
+  Classificação multiclasse & Softmax (ou Sigmoide/tanh com EQM) & Probabilidades que somam $1$ \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\questao{17}{Topologia da MLP e complexidade das regiões de decisão}
+\begin{description}
+  \item[Número de camadas ocultas (profundidade)] \textbf{0 ocultas}: só 1 hiperplano (reta/plano). \textbf{1 oculta}: regiões \textbf{convexas} (com neurônios suficientes, aproxima qualquer fronteira contínua). \textbf{2 ou mais ocultas}: combina sub-regiões para formar regiões \textbf{arbitrárias} (não convexas, desconexas, anéis) com menos neurônios.
+  \item[Número de neurônios (largura)] Define quantos hiperplanos/\enquote{lados} moldam a fronteira. Poucos demais $\to$ \emph{underfitting}; muitos demais $\to$ fronteira recortada em excesso (\emph{overfitting}).
+\end{description}
+
+\questao{18}{Duas estratégias de codificação de saída multiclasse ($C$ classes)}
+\begin{enumerate}
+  \item \textbf{Saída única (escalar/inteira):} usa \textbf{1 neurônio} na saída com um valor numérico distinto por classe (ex.: $1, 2, \dots, C$). \emph{Problema:} impõe uma \textbf{ordem/distância artificial} entre classes nominais (classe 2 fica \enquote{entre} 1 e 3).
+  \item \textbf{\emph{One-Hot} / 1-de-$C$ (padrão recomendado):} usa \textbf{$C$ neurônios} (um por classe), ativando \texttt{1} na classe correta e \texttt{0} nas demais (ex.: $[1,0,0]$, $[0,1,0]$, $[0,0,1]$). Na inferência, escolhe-se o neurônio de \textbf{maior saída} (\emph{winner-takes-all} / $\arg\max$).
+\end{enumerate}
+
+% ============================================================================
+\section{Redes Neurais Convolucionais (CNNs)}
+% ============================================================================
+
+\questao{19}{Estrutura típica de uma CNN e função de cada camada}
+Divide-se em dois blocos: \textbf{extração de características} e \textbf{classificação}.
+\begin{enumerate}
+  \item \textbf{Entrada:} recebe a imagem como tensor (Altura $\times$ Largura $\times$ Canais, ex.: RGB).
+  \item \textbf{Convolucional (Conv):} aplica filtros deslizantes para gerar \textbf{mapas de características} (bordas no início $\to$ formas e objetos nas camadas profundas).
+  \item \textbf{Ativação (ReLU):} introduz não linearidade (zera valores negativos).
+  \item \textbf{\emph{Pooling} (Subamostragem):} reduz altura e largura dos mapas, diminuindo custo computacional, combatendo \emph{overfitting} e dando invariância a pequenas translações.
+  \item \textbf{\emph{Flattening}:} achata os mapas 3D em um único vetor 1D.
+  \item \textbf{Totalmente Conectadas (\emph{Dense} / MLP):} combinam globalmente as características extraídas.
+  \item \textbf{Saída:} gera a predição final (geralmente com \textbf{Softmax}).
+\end{enumerate}
+
+\questao{20}{Comparação: \emph{Max Pooling}, \emph{Average Pooling} e \emph{Sum Pooling}}
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{} l l X @{}}
+  \toprule
+  \textbf{Operação} & \textbf{O que faz na janela} & \textbf{Quando é mais indicada} \\
+  \midrule
+  \textbf{\emph{Max Pooling}} & Seleciona o \textbf{maior valor} & Padrão em CNNs; ideal para destacar \textbf{feições fortes/esparsas} (bordas, cantos, texturas) ignorando o fundo. \\
+  \textbf{\emph{Average Pooling}} & Calcula a \textbf{média} & Quando a informação está \textbf{distribuída} na janela, para \textbf{suavizar ruído} ou no fim da rede (\emph{Global Average Pooling}). \\
+  \textbf{\emph{Sum Pooling}} & Faz a \textbf{soma total} & Quando a \textbf{energia total ou contagem acumulada} importa (ex.: contagem de objetos/multidões em mapas de densidade). \\
+  \bottomrule
+\end{tabularx}
+\end{center}
+
+\questao{21}{Como os filtros de uma CNN são obtidos vs.\ processamento de imagens tradicional}
+\begin{description}
+  \item[Na CNN] Os filtros são \textbf{pesos treináveis}: começam aleatórios e são \textbf{aprendidos automaticamente} a partir dos dados via \emph{Backpropagation} e gradiente descendente, otimizados direto para a tarefa final.
+  \item[Processamento tradicional] Os filtros são \textbf{fixos e projetados manualmente} por especialistas com fórmulas pré-definidas (ex.: Sobel para bordas, Gaussiano para suavização), independentes do classificador.
+\end{description}
+
+\questao{22}{O que é \emph{flattening} e por que é necessário?}
+\begin{description}
+  \item[O que é] Operação de \enquote{achatamento} (\emph{reshape}) que transforma o tensor 3D final (Altura $\times$ Largura $\times$ Canais) em um \textbf{único vetor 1D}, sem alterar valores e sem pesos treináveis.
+  \item[Por que é necessário] Porque as camadas totalmente conectadas (\textbf{\emph{Dense}/MLP}) no final da CNN só aceitam \textbf{vetores 1D} como entrada para multiplicar pelos pesos sinápticos e tomar a decisão final.
+\end{description}
+
+\end{document}
